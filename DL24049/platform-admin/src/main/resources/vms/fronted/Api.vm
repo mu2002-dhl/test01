@@ -1,0 +1,44 @@
+import request from '@/utils/request'
+import { ElMessage } from 'element-plus'
+
+export const page${fileName} = (pageSize, pageNum, data, succFun) => {
+  data.pageSize = pageSize
+  data.pageNum = pageNum
+  request('/${variableName}/page', 'post', data).then(data => {
+    if (data.code === 0) {
+      succFun(data.data)
+    } else {
+      ElMessage.error(data.msg)
+    }
+  })
+}
+
+export const add${fileName} = (data, succFun) => {
+  return request('/${variableName}', 'post', data)
+}
+
+export const modify${fileName} = (id, data, succFun) => {
+  return request('/${variableName}/' + id, 'put', data)
+}
+
+export const delete${fileName} = (id, succFun) => {
+  request('/${variableName}/' + id, 'delete', {})
+    .then(data => {
+      if (data.code === 0) {
+        succFun(data.data)
+      } else {
+        ElMessage.error(data.msg)
+      }
+    })
+}
+
+export const getAll${fileName} = (succFun) => {
+  return request('/${variableName}/all', 'get', {})
+    .then(data => {
+      if (data.code === 0) {
+        succFun(data.data)
+      } else {
+        ElMessage.error(data.msg)
+      }
+    })
+}

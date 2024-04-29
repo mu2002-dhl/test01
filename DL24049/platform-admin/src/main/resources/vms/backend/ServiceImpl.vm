@@ -1,0 +1,83 @@
+package cn.platform.com.business.service.impl;
+
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.platform.com.business.entity.${fileName}Entity;
+import cn.platform.com.auth.enums.CommonBizCodeEnum;
+import cn.platform.com.auth.exception.BizCustomException;
+import cn.platform.com.business.mapper.${fileName}Mapper;
+import cn.platform.com.business.model.request.${fileName}PageRequest;
+import cn.platform.com.business.model.request.${fileName}Request;
+import cn.platform.com.auth.model.response.PageResponse;
+import cn.platform.com.business.model.response.${fileName}Response;
+import cn.platform.com.business.service.${fileName}Service;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import jakarta.annotation.Resource;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class ${fileName}ServiceImpl extends ServiceImpl<${fileName}Mapper, ${fileName}Entity> implements ${fileName}Service {
+
+    @Override
+    public int add(${fileName}Request request) {
+        ${fileName}Entity ${variableName}Entity = BeanUtil.copyProperties(request, ${fileName}Entity.class);
+        return baseMapper.insert(${variableName}Entity);
+    }
+
+    @Override
+    public int modify(Integer id, ${fileName}Request request) {
+        if(baseMapper.selectById(id) == null){
+            throw new BizCustomException(CommonBizCodeEnum.OPERATOR_DATA_NOT_EXIST);
+        }
+
+        ${fileName}Entity ${variableName}Entity = BeanUtil.copyProperties(request, ${fileName}Entity.class);
+        ${variableName}Entity.setId(id);
+
+        return baseMapper.updateById(${variableName}Entity);
+    }
+
+    @Override
+    public int delete(Integer id) {
+        if(baseMapper.selectById(id) == null){
+            throw new BizCustomException(CommonBizCodeEnum.OPERATOR_DATA_NOT_EXIST);
+        }
+
+        return baseMapper.deleteById(id);
+    }
+
+    @Override
+    public PageResponse<${fileName}Response> page(${fileName}PageRequest request) {
+        IPage<${fileName}Entity> page = new Page<>(request.getPageNum(), request.getPageSize());
+
+        LambdaQueryWrapper<${fileName}Entity> wrapper = Wrappers.lambdaQuery();
+#foreach($tableStructureInfo in $tableStructureInfoList)
+  #if($tableStructureInfo.pageQuery)
+    #if($tableStructureInfo.fieldType == "String")
+        wrapper.like(StrUtil.isNotEmpty(request.get${tableStructureInfo.queryWrapperName}()), ${fileName}Entity::get${tableStructureInfo.queryWrapperName}, request.get${tableStructureInfo.queryWrapperName}());
+    #else
+        wrapper.like(request.get${tableStructureInfo.queryWrapperName}()!=null, ${fileName}Entity::get${tableStructureInfo.queryWrapperName}, request.get${tableStructureInfo.queryWrapperName}());
+    #end
+  #end
+#end
+
+        List<${fileName}Entity> ${variableName}EntityList = baseMapper.selectList(page, wrapper);
+        if(CollUtil.isEmpty(${variableName}EntityList)){
+            return new PageResponse<>(new ArrayList<>(), page.getTotal(), page.getSize(), page.getCurrent());
+        }else{
+            List<${fileName}Response> ${variableName}List = ${variableName}EntityList.stream()
+                    .map(entity -> BeanUtil.copyProperties(entity, ${fileName}Response.class))
+                    .collect(Collectors.toList());
+            return new PageResponse<>(${variableName}List, page.getTotal(), page.getSize(), page.getCurrent());
+        }
+    }
+}

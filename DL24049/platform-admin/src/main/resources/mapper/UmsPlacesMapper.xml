@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.platform.com.business.mapper.UmsPlacesMapper">
+    <select id="searchRank" resultType="cn.platform.com.business.entity.UmsPlacesEntity">
+        select * from ums_places order by search_count desc limit 10
+    </select>
+
+    <select id="ageRank" resultType="map">
+        select age,cast(COUNT(age) as char) num from ums_user where age is not null group by age
+    </select>
+</mapper>

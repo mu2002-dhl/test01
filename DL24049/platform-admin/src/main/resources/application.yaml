@@ -1,0 +1,32 @@
+server:
+  port: 9001
+spring:
+  application:
+    name: platform-admin
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/wxyy_dhl?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: lun2002.
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  type-aliases-package: cn.platform.com.auth
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+
+platform:
+  name: 基于文心一言的常州淹城春秋乐园旅游规划平台
+  filePath: D://dl24049//file
+  loginEnable: true
+  loginRole: true
+
+wxyy:
+  clientId: Q2h2PDDcTTSfG8VvXWM2FMxa
+  clientSecret: XvkCFtxU2rXZ5bgTZ1LI8rw8HGZpzI8D
+

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.platform.com.auth.mapper.UmsPermissionMapper">
+
+    <select id="selectMenuByUserId" parameterType="long" resultType="umsPermissionEntity">
+        SELECT
+            p.*
+        FROM
+            ums_permission p
+        INNER JOIN ums_permission_role pr ON p.id = pr.permission_id
+        INNER JOIN ums_user_role ur ON ur.role_id = pr.role_id
+        WHERE
+            ur.user_id = #{userId}
+    </select>
+
+    <select id="selectMenuByRoleIdParentId" parameterType="map" resultType="umsPermissionEntity">
+        SELECT
+            p.*
+        FROM
+            ums_permission p
+        INNER JOIN ums_permission_role pr ON p.id = pr.permission_id
+        WHERE
+            parent_id = #{parentId}
+            and role_id in (
+            <foreach collection="roleIdList" item="roleId" separator=",">
+                #{roleId}
+            </foreach>
+        )
+        order by p.sort
+    </select>
+
+    <select id="selectMenuByRoleId" parameterType="long" resultType="umsPermissionEntity">
+        SELECT
+        p.*
+        FROM
+        ums_permission p
+        INNER JOIN ums_permission_role pr ON p.id = pr.permission_id
+        WHERE
+        role_id in (
+        <foreach collection="roleIdList" item="roleId" separator=",">
+            #{roleId}
+        </foreach>
+        )
+        order by p.sort
+    </select>
+
+</mapper>

@@ -1,0 +1,13 @@
+package cn.platform.com.business.model.response;
+
+import lombok.Data;
+
+import java.util.Date;
+
+@Data
+public class ${fileName}Response {
+#foreach($tableStructureInfo in $tableStructureInfoList)
+     /**${tableStructureInfo.fieldComment}*/
+     private ${tableStructureInfo.fieldType} ${tableStructureInfo.fieldCamelName};
+#end
+}

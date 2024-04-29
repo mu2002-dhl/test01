@@ -1,0 +1,20 @@
+package cn.platform.com.business.model.request;
+
+import lombok.Data;
+
+import java.util.Date;
+
+@Data
+public class ${fileName}Request {
+
+#foreach($tableStructureInfo in $tableStructureInfoList)
+  #if($tableStructureInfo.fieldName != "create_time" &&
+      $tableStructureInfo.fieldName != "modify_time" &&
+      $tableStructureInfo.fieldName != "creator" &&
+      $tableStructureInfo.fieldName != "modifier" &&
+      $tableStructureInfo.filedKey!="PRI")
+     /**${tableStructureInfo.fieldComment}*/
+     private ${tableStructureInfo.fieldType} ${tableStructureInfo.fieldCamelName};
+  #end
+#end
+}

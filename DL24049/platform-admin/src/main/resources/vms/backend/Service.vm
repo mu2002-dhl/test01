@@ -1,0 +1,20 @@
+package cn.platform.com.business.service;
+
+import cn.platform.com.business.entity.${fileName}Entity;
+import cn.platform.com.business.model.request.${fileName}PageRequest;
+import cn.platform.com.business.model.request.${fileName}Request;
+import cn.platform.com.auth.model.response.PageResponse;
+import cn.platform.com.business.model.response.${fileName}Response;
+import com.baomidou.mybatisplus.extension.service.IService;
+
+
+public interface ${fileName}Service extends IService<${fileName}Entity> {
+
+    int add(${fileName}Request request);
+
+    int modify(Integer id, ${fileName}Request request);
+
+    int delete(Integer id);
+
+    PageResponse<${fileName}Response> page(${fileName}PageRequest request);
+}

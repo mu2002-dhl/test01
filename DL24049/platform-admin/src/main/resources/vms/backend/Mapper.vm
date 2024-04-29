@@ -1,0 +1,9 @@
+package cn.platform.com.business.mapper;
+
+import cn.platform.com.business.entity.${fileName}Entity;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+
+public interface ${fileName}Mapper extends BaseMapper<${fileName}Entity> {
+
+}
